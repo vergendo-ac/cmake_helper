@@ -8,6 +8,11 @@ add_definitions("/bigobj")
 # To omit definition of min/max macros in the windows.h that disturbs to std::max/std::min expressions for msvc compiler
 add_definitions("-DNOMINMAX")
 
+# msvc floating point model: "strict" helped to unify results on different compiler versions
+# For more info look at: https://msdn.microsoft.com/en-us/library/e7s85ffb%28v=vs.120%29.aspx
+#
+add_definitions("/fp:strict")
+
 # Boost requires this because of removed std::unary_function since /std:c++14,
 # see https://stackoverflow.com/questions/41972522
 #
