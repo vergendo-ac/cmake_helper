@@ -314,6 +314,39 @@ if (NOT GLOG_FOUND)
 
   glog_reset_find_library_prefix()
 
+  # If we've detected both GLOG_INCLUDE_DIR and GLOG_LIBRARY properly,
+  # then create the target 'glog::glog'.
+  if (EXISTS ${GLOG_INCLUDE_DIR}/glog/logging.h AND
+      GLOG_LIBRARY)
+    message(STATUS "Found built glog at inc:${GLOG_INCLUDE_DIR} lib:${GLOG_LIBRARY}")
+    add_library(glog::glog SHARED IMPORTED)
+    set_target_properties(glog::glog PROPERTIES
+        INTERFACE_INCLUDE_DIRECTORIES  ${GLOG_INCLUDE_DIR}
+        IMPORTED_LOCATION              ${GLOG_LIBRARY})
+
+    if (GLOG_LIBRARY_RELEASE AND GLOG_LIBRARY_DEBUG)
+      set_target_properties(glog::glog PROPERTIES
+        IMPORTED_LOCATION_DEBUG          ${GLOG_LIBRARY_DEBUG}
+        IMPORTED_LOCATION_RELWITHDEBINFO ${GLOG_LIBRARY_DEBUG}
+        IMPORTED_LOCATION_RELEASE        ${GLOG_LIBRARY_RELEASE}
+        IMPORTED_LOCATION_MINSIZEREL     ${GLOG_LIBRARY_RELEASE})
+    elseif(GLOG_LIBRARY_RELEASE)
+      set_target_properties(glog::glog PROPERTIES
+        IMPORTED_LOCATION                ${GLOG_LIBRARY_RELEASE})
+    elseif(GLOG_LIBRARY_DEBUG)
+      set_target_properties(glog::glog PROPERTIES
+        IMPORTED_LOCATION                ${GLOG_LIBRARY_DEBUG})
+    endif()
+    # Wrap the include directories into the exported glog::glog target
+    set(GLOG_INCLUDE_DIR "")
+    set(GLOG_LIBRARY glog::glog)
+    # Set this for further understanding below that we've found glog::glog
+    set(FOUND_INSTALLED_GLOG_CMAKE_CONFIGURATION TRUE)
+    # Set this for the next pass of this file (or Ceres's old one) to use ready glog::glog with GLOG_FOUND=TRUE
+    set(GLOG_PREFER_EXPORTED_GLOG_CMAKE_CONFIGURATION FALSE)
+  endif (EXISTS ${GLOG_INCLUDE_DIR}/glog/logging.h AND
+      GLOG_LIBRARY)
+
 endif(NOT GLOG_FOUND)
 
 # Set standard CMake FindPackage variables if found.
