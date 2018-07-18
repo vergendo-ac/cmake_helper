@@ -13,10 +13,10 @@ add_definitions("/MP")
 add_definitions("/bigobj")
 
 # To omit definition of min/max macros in the windows.h that disturbs to
-#   std::max/std::min expressions for msvc compiler
+#   std::max/std::min expressions for MSVC compiler
 add_definitions("-DNOMINMAX")
 
-# msvc floating point model: "strict" helped to unify results on differet compiler versions
+# MSVC floating point model: "strict" helped to unify results on different compiler versions
 # For more info look at: https://msdn.microsoft.com/en-us/library/e7s85ffb%28v=vs.120%29.aspx
 #
 add_definitions("/fp:strict")
