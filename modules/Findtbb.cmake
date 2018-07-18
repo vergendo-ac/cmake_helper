@@ -21,14 +21,14 @@
 # SOFTWARE.
 
 #
-# FindTBB
+# Findtbb
 # -------
 #
 # Find TBB include directories and libraries.
 #
 # Usage:
 #
-#  find_package(TBB [major[.minor]] [EXACT]
+#  find_package(tbb [major[.minor]] [EXACT]
 #               [QUIET] [REQUIRED]
 #               [[COMPONENTS] [components...]]
 #               [OPTIONAL_COMPONENTS components...])
@@ -87,7 +87,7 @@
 # * TBB_DEFINITIONS_DEBUG   - Definitions to use when compiling debug code that
 #                             uses TBB.
 #
-# This module will also create the "tbb" target that may be used when building
+# This module will also create the "tbb::tbb" target that may be used when building
 # executables and libraries.
 
 include(FindPackageHandleStandardArgs)
@@ -293,14 +293,14 @@ if(NOT TBB_FOUND)
   ##################################
 
   if(NOT CMAKE_VERSION VERSION_LESS 3.0 AND TBB_FOUND)
-    add_library(tbb SHARED IMPORTED)
+    add_library(tbb::tbb SHARED IMPORTED)
     if(WIN32)
-      set_target_properties(tbb PROPERTIES
+      set_target_properties(tbb::tbb PROPERTIES
             INTERFACE_INCLUDE_DIRECTORIES  ${TBB_INCLUDE_DIRS}
             IMPORTED_LOCATION              ${TBB_DLLs}
             IMPORTED_IMPLIB                ${TBB_LIBRARIES})
       if(TBB_LIBRARIES_RELEASE AND TBB_LIBRARIES_DEBUG)
-        set_target_properties(tbb PROPERTIES
+        set_target_properties(tbb::tbb PROPERTIES
             INTERFACE_COMPILE_DEFINITIONS "$<$<OR:$<CONFIG:Debug>,$<CONFIG:RelWithDebInfo>>:TBB_USE_DEBUG=1>"
             IMPORTED_LOCATION_DEBUG          ${TBB_DLLs_DEBUG}
             IMPORTED_LOCATION_RELWITHDEBINFO ${TBB_DLLs_DEBUG}
@@ -312,20 +312,20 @@ if(NOT TBB_FOUND)
             IMPORTED_IMPLIB_MINSIZEREL       ${TBB_LIBRARIES_RELEASE}
             )
       elseif(TBB_LIBRARIES_RELEASE)
-        set_target_properties(tbb PROPERTIES IMPORTED_LOCATION ${TBB_DLLs_RELEASE} IMPORTED_IMPLIB ${TBB_LIBRARIES_RELEASE})
+        set_target_properties(tbb::tbb PROPERTIES IMPORTED_LOCATION ${TBB_DLLs_RELEASE} IMPORTED_IMPLIB ${TBB_LIBRARIES_RELEASE})
       else()
-        set_target_properties(tbb PROPERTIES
+        set_target_properties(tbb::tbb PROPERTIES
             INTERFACE_COMPILE_DEFINITIONS "${TBB_DEFINITIONS_DEBUG}"
             IMPORTED_LOCATION              ${TBB_DLLs_DEBUG}
             IMPORTED_IMPLIB                ${TBB_LIBRARIES_DEBUG}
             )
       endif()
     else()
-      set_target_properties(tbb PROPERTIES
+      set_target_properties(tbb::tbb PROPERTIES
             INTERFACE_INCLUDE_DIRECTORIES  ${TBB_INCLUDE_DIRS}
             IMPORTED_LOCATION              ${TBB_LIBRARIES})
       if(TBB_LIBRARIES_RELEASE AND TBB_LIBRARIES_DEBUG)
-        set_target_properties(tbb PROPERTIES
+        set_target_properties(tbb::tbb PROPERTIES
             INTERFACE_COMPILE_DEFINITIONS "$<$<OR:$<CONFIG:Debug>,$<CONFIG:RelWithDebInfo>>:TBB_USE_DEBUG=1>"
             IMPORTED_LOCATION_DEBUG          ${TBB_LIBRARIES_DEBUG}
             IMPORTED_LOCATION_RELWITHDEBINFO ${TBB_LIBRARIES_DEBUG}
@@ -333,9 +333,9 @@ if(NOT TBB_FOUND)
             IMPORTED_LOCATION_MINSIZEREL     ${TBB_LIBRARIES_RELEASE}
             )
       elseif(TBB_LIBRARIES_RELEASE)
-        set_target_properties(tbb PROPERTIES IMPORTED_LOCATION ${TBB_LIBRARIES_RELEASE})
+        set_target_properties(tbb::tbb PROPERTIES IMPORTED_LOCATION ${TBB_LIBRARIES_RELEASE})
       else()
-        set_target_properties(tbb PROPERTIES
+        set_target_properties(tbb::tbb PROPERTIES
             INTERFACE_COMPILE_DEFINITIONS "${TBB_DEFINITIONS_DEBUG}"
             IMPORTED_LOCATION              ${TBB_LIBRARIES_DEBUG}
             )
