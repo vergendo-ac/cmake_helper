@@ -144,7 +144,7 @@ if(NOT TBB_FOUND)
 
     # Add the library path search suffix for the VC independent version of TBB
     list(APPEND TBB_LIB_PATH_SUFFIX "lib/${TBB_ARCHITECTURE}/vc_mt")
-    
+
     string(REPLACE "lib/" "bin/" TBB_DLL_PATH_SUFFIX "${TBB_LIB_PATH_SUFFIX}")
 
   elseif(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
@@ -220,7 +220,7 @@ if(NOT TBB_FOUND)
           HINTS ${TBB_LIBRARY} ${TBB_SEARCH_DIR}
           PATHS ${TBB_DEFAULT_SEARCH_DIR} ENV LIBRARY_PATH
           PATH_SUFFIXES ${TBB_LIB_PATH_SUFFIX})
-          
+
       # Search for the DLLs (Windows-only)
       find_file(TBB_${_comp}_DLL_RELEASE ${_comp}.dll
           HINTS ${TBB_LIBRARY} ${TBB_SEARCH_DIR}
