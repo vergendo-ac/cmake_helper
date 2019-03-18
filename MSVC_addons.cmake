@@ -5,6 +5,13 @@
 # Any new module that will require specific options for MSVC should be added here.
 #
 
+# Before VS 2017 15.8, the member type would non-conformingly have an alignment of only
+# alignof(max_align_t). VS 2017 15.8 was fixed to handle this correctly, but the fix
+# inherently changes layout and breaks binary compatibility (*only* for uses of
+# aligned_storage with extended alignments).
+# https://forum.kde.org/viewtopic.php?f=74&t=153982
+add_compile_definitions(_ENABLE_EXTENDED_ALIGNED_STORAGE)
+
 # Unfortunately parallel building is off by default
 add_definitions("/MP")
 
