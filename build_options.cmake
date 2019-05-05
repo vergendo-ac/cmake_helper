@@ -54,3 +54,12 @@ else()
     link_libraries("-fsanitize=address")
   endif()
 endif()
+
+# The c++17 standard allows using std::filesystem that requires an additional
+# library on linux only. Thus we define a FILESYSTEM_LIBRARY to use further.
+#
+if (IS_MSVC)
+  set(FILESYSTEM_LIBRARY "")
+else()
+  set(FILESYSTEM_LIBRARY "stdc++fs")
+endif()
