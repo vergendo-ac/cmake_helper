@@ -13,6 +13,12 @@
 
 include(LibFindMacros)
 
+if(WIN32)
+    find_package(expat REQUIRED)
+    find_package(iconv REQUIRED)
+    find_package(zlib REQUIRED)
+endif()
+
 SET(EXIV2_FIND_REQUIRED ${Exiv2_FIND_REQUIRED})
 
 libfind_pkg_check_modules(Exiv2 exiv2)
@@ -37,9 +43,12 @@ find_library(EXIV2_LIBRARY
 mark_as_advanced(EXIV2_LIBRARY)
 
 if(WIN32)
-  find_library(EXPAT_LIBRARY NAMES expat )
-  find_library(ICONV_LIBRARY NAMES iconv )
-  list(APPEND EXIV2_LIBRARY ${EXPAT_LIBRARY} ${ICONV_LIBRARY})
+    find_library(EXIV2_XMP_LIBRARY NAMES exiv2-xmp
+        HINTS
+            ${Exiv2_LIBDIR}
+            ${Exiv2_LIBRARY_DIRS}
+    )
+    list(APPEND EXIV2_LIBRARY ${EXPAT_LIBRARY} ${ICONV_LIBRARY} ${EXIV2_XMP_LIBRARY} ${ZLIB_LIBRARY} Psapi)
 endif(WIN32)
 
 if(Exiv2_VERSION VERSION_LESS Exiv2_FIND_VERSION)
@@ -47,10 +56,9 @@ if(Exiv2_VERSION VERSION_LESS Exiv2_FIND_VERSION)
 endif(Exiv2_VERSION VERSION_LESS Exiv2_FIND_VERSION)
 
 include(FindPackageHandleStandardArgs)
-find_package_handle_standard_args(EXIV2 DEFAULT_MSG EXIV2_LIBRARY EXIV2_INCLUDE_DIR)
+find_package_handle_standard_args(Exiv2 DEFAULT_MSG EXIV2_LIBRARY EXIV2_INCLUDE_DIR)
 
-IF(EXIV2_FOUND)
+IF(Exiv2_FOUND)
   SET(Exiv2_LIBRARIES ${EXIV2_LIBRARY})
   SET(Exiv2_INCLUDE_DIRS ${EXIV2_INCLUDE_DIR})
-ENDIF(EXIV2_FOUND)
-
+ENDIF(Exiv2_FOUND)
