@@ -45,6 +45,8 @@ if (NOT Boost_USE_STATIC_LIBS)
 # add_definitions(${Boost_LIB_DIAGNOSTIC_DEFINITIONS})
 endif()
 
+add_compile_definitions(BOOST_DATE_TIME_NO_LIB BOOST_REGEX_NO_LIB WIN32_LEAN_AND_MEAN)
+
 # gtest module should use dynamic CRT libraries by default on windows.
 set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 
