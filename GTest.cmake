@@ -36,7 +36,5 @@ endfunction()
 # Calls link_gtest with given arguments and registers tests in CTest.
 macro(add_gtest TARGET)
     link_gtest(${ARGV})
-    set(TEST_REPORT_FILENAME ${TARGET}_detail.xml)
-    set(GTEST_FLAGS "--gtest_output=xml:${TEST_REPORT_FILENAME}")
-    gtest_discover_tests(${TARGET} EXTRA_ARGS "${GTEST_FLAGS}")
+    gtest_discover_tests(${TARGET})
 endmacro()
