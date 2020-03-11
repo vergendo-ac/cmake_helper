@@ -29,7 +29,6 @@ function(link_gtest TARGET)
         endif()
     endif()
 
-    target_link_libraries(${TARGET} common_utils tests_main)
     target_compile_definitions(${TARGET} PRIVATE TEST_LOCAL_DATA_DIR="${TEST_LOCAL_DATA_DIR}"  ROOT_DIR="${ROOT_DIR}")
 endfunction()
 
