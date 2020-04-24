@@ -2,6 +2,8 @@ cmake_minimum_required(VERSION 3.13)
 
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_CURRENT_LIST_DIR}/modules")
 
+include(CheckCXXSourceCompiles)
+
 if (CMAKE_CXX_COMPILER_ID MATCHES "^MSVC$")
   set(IS_MSVC ON)
 endif()
@@ -55,10 +57,21 @@ else()
   endif()
 endif()
 
-# The c++17 standard allows using std::filesystem that requires an additional
-# library on linux only. Thus we define a FILESYSTEM_LIBRARY to use further.
+# libstdc++ from pre-9 GCC versions requires an additional library
+# for c++17 std::filesystem.
 #
-if (IS_MSVC)
+check_cxx_source_compiles("
+#include <iosfwd>
+#if defined(_GLIBCXX_RELEASE)
+#if _GLIBCXX_RELEASE < 9
+#error libstdc++ version requires stdc++fs linkage
+#endif
+#endif
+int main() { return 0; }
+"
+NOT_GLIBCXX_NEEDS_FS_LIB)
+
+if (NOT_GLIBCXX_NEEDS_FS_LIB)
   set(FILESYSTEM_LIBRARY "")
 else()
   set(FILESYSTEM_LIBRARY "stdc++fs")
