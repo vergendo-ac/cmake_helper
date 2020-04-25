@@ -47,6 +47,9 @@ endif()
 
 add_compile_definitions(BOOST_DATE_TIME_NO_LIB BOOST_REGEX_NO_LIB WIN32_LEAN_AND_MEAN)
 
+# Boost compile warning deprecation
+add_compile_definitions(_WIN32_WINNT=0x0601)
+
 # gtest module should use dynamic CRT libraries by default on windows.
 set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 
