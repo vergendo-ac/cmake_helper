@@ -14,12 +14,12 @@
 add_compile_definitions(_ENABLE_EXTENDED_ALIGNED_STORAGE)
 
 # Unfortunately parallel building is off by default
-add_definitions("/MP")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /MP")
 
 # Many targets overflow default size of object files with last packages,
 #   so we allow all our targets to have huge objs
 #
-add_definitions("/bigobj")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /bigobj")
 
 # To omit definition of min/max macros in the windows.h that disturbs to
 #   std::max/std::min expressions for MSVC compiler
@@ -29,7 +29,7 @@ add_compile_definitions(NOMINMAX)
 # MSVC floating point model: "strict" helped to unify results on different compiler versions
 # For more info look at: https://msdn.microsoft.com/en-us/library/e7s85ffb%28v=vs.120%29.aspx
 #
-add_definitions("/fp:strict")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /fp:strict")
 
 # Boost requires this because of removed std::unary_function since /std:c++14,
 # see https://stackoverflow.com/questions/41972522
@@ -61,3 +61,5 @@ set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 # Source: https://github.com/justusc/FindTBB/issues/8
 #
 add_compile_definitions(__TBB_NO_IMPLICIT_LINKAGE)
+
+set(CMAKE_CUDA_FLAGS ${CMAKE_CUDA_FLAGS} "-DWIN32")
