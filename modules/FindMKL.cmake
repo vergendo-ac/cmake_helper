@@ -143,7 +143,8 @@ else() # LINUX
 endif()
 set(_mkl_search_paths "${MKL_ROOT}"
         "${MKL_ROOT}/mkl"
-        "${MKL_ROOT}/compiler")
+        "${MKL_ROOT}/compiler"
+        "/usr/lib/x86_64-linux-gnu")
 
 # Functions: finds both static and shared MKL libraries
 #
@@ -164,7 +165,8 @@ endfunction()
 #
 find_path(MKL_INCLUDE_DIR mkl.h
         HINTS ${MKL_ROOT}/include
-        ${MKL_ROOT}/mkl/include)
+        ${MKL_ROOT}/mkl/include
+        /usr/include/mkl)
 mark_as_advanced(MKL_INCLUDE_DIR)
 
 # Group flags for static libraries on Linux (GNU, PGI, ICC -> same linker)
