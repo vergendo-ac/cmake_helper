@@ -113,6 +113,22 @@ else ()
     message(STATUS "Looking for metis -- metis.h not found")
   endif()
 endif()
+
+#
+# Find METIS version
+#
+find_file(METIS_VERSION_FILE metis.h
+          PATH_SUFFIXES "include" "include/metis"
+          HINTS ${METIS_metis.h_DIRS}
+          )
+if(METIS_VERSION_FILE)
+  file(READ ${METIS_VERSION_FILE} METIS_VERSION_FILE_CONTENT)
+  string(REGEX REPLACE ".*METIS_VER_MAJOR[ ]*([0-9]).*"   "\\1" METIS_VERSION_MAJOR ${METIS_VERSION_FILE_CONTENT})
+  string(REGEX REPLACE ".*METIS_VER_MINOR[ ]*([0-9]).*"   "\\1" METIS_VERSION_MINOR ${METIS_VERSION_FILE_CONTENT})
+  string(REGEX REPLACE ".*METIS_VER_SUBMINOR[ ]*([0-9]).*" "\\1" METIS_VERSION_PATCH ${METIS_VERSION_FILE_CONTENT})
+  set(METIS_VERSION "${METIS_VERSION_MAJOR}.${METIS_VERSION_MINOR}.${METIS_VERSION_PATCH}")
+endif()
+
 # Looking for lib
 # ---------------
 # Add system library paths to search lib
@@ -234,9 +250,10 @@ mark_as_advanced(METIS_DIR_FOUND)
 # check that METIS has been found
 # ---------------------------------
 include(FindPackageHandleStandardArgs)
-find_package_handle_standard_args(METIS DEFAULT_MSG
-  METIS_LIBRARIES
-  METIS_WORKS)
+find_package_handle_standard_args(Metis
+                                  REQUIRED_VARS METIS_LIBRARIES METIS_WORKS
+                                  VERSION_VAR METIS_VERSION
+                                  )
 #
 # TODO: Add possibility to check for specific functions in the library
 #
