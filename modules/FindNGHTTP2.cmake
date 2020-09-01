@@ -26,7 +26,7 @@ if(NOT NGHTTP2_FOUND)
 
   set(NGHTTP2_INCLUDE_DIR NOTFOUND)
   find_path(NGHTTP2_INCLUDE_DIR
-            nghttp2.h
+            nghttp2/nghttp2.h
             PATH_SUFFIXES nghttp2
             PATHS ${NGHTTP2_ROOT}/include
             )
@@ -46,6 +46,11 @@ if(NOT NGHTTP2_FOUND)
                NAME	nghttp2
                PATHS ${NGHTTP2_ROOT}
                )
+  set(NGHTTP2_ASIO_LIBRARY NOTFOUND)
+  find_library(NGHTTP2_ASIO_LIBRARY
+          NAME	nghttp2_asio
+          PATHS ${NGHTTP2_ROOT}
+          )
   if(NOT NGHTTP2_LIBRARY)
     string(APPEND
            NGHTTP2_ERROR_REASON
@@ -77,6 +82,14 @@ if(NOT NGHTTP2_FOUND)
     set(NGHTTP2_FOUND TRUE)
   endif()
 
+  if (nghttp2_asio IN_LIST NGHTTP2_FIND_COMPONENTS AND NOT NGHTTP2_ASIO_LIBRARY)
+    set(NGHTTP2_FOUND FALSE)
+    string(APPEND
+            NGHTTP2_ERROR_REASON
+            "Library for nghttp2_asio component not found. Ensure that NGHTTP2 was built/installed with asio module."
+            )
+  endif()
+
   if(NGHTTP2_FOUND)
     if(NOT TARGET NGHTTP2::nghttp2)
       add_library(NGHTTP2::nghttp2 INTERFACE IMPORTED)
@@ -85,6 +98,14 @@ if(NOT NGHTTP2_FOUND)
                             INTERFACE_INCLUDE_DIRECTORIES ${NGHTTP2_INCLUDE_DIRS}
                             INTERFACE_LINK_LIBRARIES "${NGHTTP2_LIBRARIES}"
                             )
+    endif()
+    if(NOT TARGET NGHTTP2::nghttp2_asio AND NGHTTP2_ASIO_LIBRARY)
+      add_library(NGHTTP2::nghttp2_asio INTERFACE IMPORTED)
+      set_target_properties(NGHTTP2::nghttp2_asio
+              PROPERTIES
+              INTERFACE_INCLUDE_DIRECTORIES ${NGHTTP2_INCLUDE_DIRS}
+              INTERFACE_LINK_LIBRARIES "${NGHTTP2_ASIO_LIBRARY}"
+              )
     endif()
 
     include(FindPackageHandleStandardArgs)
