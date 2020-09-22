@@ -120,3 +120,12 @@ if(NOT NGHTTP2_FOUND)
   endif()
 
 endif(NOT NGHTTP2_FOUND)
+
+if (NOT NGHTTPX_PATH)
+  find_program(NGHTTPX_PATH nghttpx)
+  if (NGHTTPX_PATH) 
+    message("nghttpx path: " ${NGHTTPX_PATH})
+  else ()   
+    message(WARNING "nghttpx not found!")
+  endif()  
+endif(NOT NGHTTPX_PATH)
