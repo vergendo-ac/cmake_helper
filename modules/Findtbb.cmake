@@ -56,7 +56,7 @@
 #
 # This module will set the following variables:
 #
-# * TBB_FOUND             - Set to false, or undefined, if we haven’t found, or
+# * tbb_FOUND             - Set to false, or undefined, if we haven’t found, or
 #                           don’t want to use TBB.
 # * TBB_<component>_FOUND - If False, optional <component> part of TBB sytem is
 #                           not available.
@@ -92,7 +92,7 @@
 
 include(FindPackageHandleStandardArgs)
 
-if(NOT TBB_FOUND)
+if(NOT tbb_FOUND)
 
   ##################################
   # Check the build type
@@ -283,7 +283,7 @@ if(NOT TBB_FOUND)
     set(TBB_DLLs "${TBB_DLLs_DEBUG}")
   endif()
 
-  find_package_handle_standard_args(TBB
+  find_package_handle_standard_args(tbb
       REQUIRED_VARS TBB_INCLUDE_DIRS TBB_LIBRARIES
       HANDLE_COMPONENTS
       VERSION_VAR TBB_VERSION)
@@ -292,7 +292,7 @@ if(NOT TBB_FOUND)
   # Create targets
   ##################################
 
-  if(NOT CMAKE_VERSION VERSION_LESS 3.0 AND TBB_FOUND)
+  if(NOT CMAKE_VERSION VERSION_LESS 3.0 AND tbb_FOUND)
     add_library(tbb::tbb SHARED IMPORTED)
     if(WIN32)
       set_target_properties(tbb::tbb PROPERTIES
