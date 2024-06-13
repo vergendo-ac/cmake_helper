@@ -1,12 +1,18 @@
 # - Try to find systemd
 # Once done this will define
-#  SYSTEMD_FOUND        - System has systemd
+#  systemd_FOUND        - System has systemd
 #  SYSTEMD_INCLUDE_DIRS - The systemd include directories
 #  SYSTEMD_LIBRARIES    - The libraries needed to use systemd
+#
+#  Usage:
+#
+#     find_package(systemd [major[.minor]] [EXACT]
+#                  [QUIET] [REQUIRED])
+#
 
-if(NOT SYSTEMD_FOUND)
+if(NOT systemd_FOUND)
   include(FeatureSummary)
-  set_package_properties(Systemd PROPERTIES
+  set_package_properties(systemd PROPERTIES
           URL "http://freedesktop.org/wiki/Software/systemd/"
           DESCRIPTION "System and Service Manager")
 
@@ -16,7 +22,7 @@ if(NOT SYSTEMD_FOUND)
   find_path(SYSTEMD_INCLUDE_DIRS systemd/sd-login.h HINTS ${PC_SYSTEMD_INCLUDE_DIRS})
 
   include(FindPackageHandleStandardArgs)
-  find_package_handle_standard_args(SYSTEMD DEFAULT_MSG SYSTEMD_INCLUDE_DIRS SYSTEMD_LIBRARIES)
+  find_package_handle_standard_args(systemd DEFAULT_MSG SYSTEMD_INCLUDE_DIRS SYSTEMD_LIBRARIES)
   mark_as_advanced(SYSTEMD_INCLUDE_DIRS SYSTEMD_LIBRARIES)
 
   add_library(systemd::systemd SHARED IMPORTED)
