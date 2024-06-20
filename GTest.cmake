@@ -3,11 +3,13 @@ include(GoogleTest)
 set(OLD_ROOT_DIR "" CACHE INTERNAL "For CMake debug output")
 set(OLD_TEST_LOCAL_DATA_DIR "" CACHE INTERNAL "For CMake debug output")
 
+#
 # Modifies target to include all compilation and linkage options
 # for googletest-based test.
 # Optional arguments:
 # ROOT_DIR - directory containing test data folder. Default value is project root.
 # TEST_LOCAL_DATA_DIR - directory for temporary test data. Default value is build directory.
+#
 function(link_gtest TARGET)
     if(${ARGC} GREATER 1)
         set(ROOT_DIR ${ARGV1})
@@ -32,8 +34,18 @@ function(link_gtest TARGET)
     target_compile_definitions(${TARGET} PRIVATE TEST_LOCAL_DATA_DIR="${TEST_LOCAL_DATA_DIR}"  ROOT_DIR="${ROOT_DIR}")
 endfunction()
 
+#
 # Calls link_gtest with given arguments and registers tests in CTest.
+# Optional arguments:
+# DISCOVERY_TIMEOUT - how long CMake will wait for the test to enumerate available tests.
+#                     Note that the default value has been changed from 5s to 500seconds.
+#
 macro(add_gtest TARGET)
     link_gtest(${ARGV})
-    gtest_discover_tests(${TARGET})
+    if(${ARGC} GREATER 1)
+        set(GTEST_DISCOVERY_TIMEOUT ${ARGV1})
+    else()
+        set(GTEST_DISCOVERY_TIMEOUT 500)
+    endif()
+    gtest_discover_tests(${TARGET} DISCOVERY_TIMEOUT ${GTEST_DISCOVERY_TIMEOUT})
 endmacro()
