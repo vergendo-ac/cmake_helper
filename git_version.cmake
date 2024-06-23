@@ -22,9 +22,9 @@ function(add_version TARGET DEFINE_NAME)
   string(REPLACE "\n" "" GIT_INFO_COMMIT ${GIT_INFO_COMMIT})
   string(REPLACE "\n" "" GIT_INFO_BRANCH ${GIT_INFO_BRANCH})
 
-  string(TIMESTAMP BUILD_DATA "%y.%m.%d %H:%M")
+  string(TIMESTAMP BUILD_DATE "%y.%m.%d %H:%M")
 
-  set(VERSION "${GIT_INFO_COMMIT} ${GIT_INFO_BRANCH} ${BUILD_DATA}")
+  set(VERSION "${GIT_INFO_COMMIT} ${GIT_INFO_BRANCH} ${BUILD_DATE}")
   string(REGEX REPLACE "-[a-z0-9-]*" "" TAG_ONLY ${GIT_INFO_COMMIT})
 
   get_target_property(TARGET_TYPE ${TARGET} TYPE)
